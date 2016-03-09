@@ -1,3 +1,3 @@
 # Summary
 
-* [Effective Go Lite Version](README.md)
+* [Preface](README.md)
