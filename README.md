@@ -1,5 +1,9 @@
-*Reference from [Effective Go](https://golang.org/doc/effective_go.html)*
-*Reference from [Effective Go](https://github.com/qqbuby/effective_go)*
+*Reference from [Offical Effective Go](https://golang.org/doc/effective_go.html)*
+
+*Reference from [qqbuby's Effective Go](https://github.com/qqbuby/effective_go)*
+
+*Fork me on [GitHub](https://github.com/bingoHuang/effective-go-lite-gitbook)*
+
 ## Overview
 Go is a new language. Although it borrows ideas from existing languages, it has unusual properties that make effetive Go program different in character from programs written in its relatives. A straightforword tranlation of a C++ or Java program into Go is unlikely to produce a satisfactory result-Java programs are written in Java, not Go. In other words, to write Go well, it's important to understand its properties and idioms. It's also important to know the established conventions for programming in Go, such as naming, formatting, program construction, and so on, so that programs you write will be easy for other Go programmers to understand.
 
