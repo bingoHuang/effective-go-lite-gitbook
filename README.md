@@ -69,7 +69,7 @@ The importer of a package will use the name to refer to its contents, so exporte
 
 ### Getters
 
-Go doesn't provide automatic support for getters and setters. There's nothing wrong with providing getters and setters yourself, and it's often appropriate to do so, but it's neither idomatic nor necessary to put *Get* into the getter's name. If you have a filed called *owner* (lover case, unexported), the getter method should be called *Owner* (upper case, exported), not *GetOwner*. The use of upper-case names for export provides the hook to discriminate the field from the method. A setter function, if needed, will likely be called *SetOwner*. Both names read well in pratice:
+Go doesn't provide automatic support for getters and setters. There's nothing wrong with providing getters and setters yourself, and it's often appropriate to do so, but it's neither idomatic nor necessary to put *Get* into the getter's name. If you have a field called *owner* (lover case, unexported), the getter method should be called *Owner* (upper case, exported), not *GetOwner*. The use of upper-case names for export provides the hook to discriminate the field from the method. A setter function, if needed, will likely be called *SetOwner*. Both names read well in pratice:
 
     owner := obj.Owner()
     if owner != user {
