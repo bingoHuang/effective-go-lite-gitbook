@@ -1,3 +1,5 @@
+> **Please go to [effective-go-zh-en@Github](https://github.com/bingoHuang/effective-go-zh-en) or [effective-go-zh-en@Gitbook](https://www.gitbook.com/book/bingohuang/effective-go-lite-edition) which are more complete.**
+
 *Reference from [Offical Effective Go](https://golang.org/doc/effective_go.html)*
 
 *Reference from [qqbuby's Effective Go](https://github.com/qqbuby/effective_go)*
