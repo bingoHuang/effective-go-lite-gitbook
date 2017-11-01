@@ -881,23 +881,23 @@ If we need to refer to an embedded field directly, the type name of the field, i
 
 Embedding types introduce the problem of name conflicts.
 
-* First, a field or method `X` hides any other item `X` in a more deeply nested part of the type. If `log.Logger` contained a field or method called `Command`, the `Command` field of the `Job` wouble dominate it.
-* Second, if the same name appears at the same nesting level, it is usually an error; it would be erroneous to embed `log.Logger` if the `Job` struct contianed anohter field or method called `Logger`. However, if the duplicate name is never mentiaioned in the program outside the type definition, it is OK. This qualification provides some protection against changes made to types embedded from outside; there is no problem if a field is added that confilcts with another field in another subtype if neither field is ever used.
+* First, a field or method `X` hides any other item `X` in a more deeply nested part of the type. If `log.Logger` contained a field or method called `Command`, the `Command` field of the `Job` would dominate it.
+* Second, if the same name appears at the same nesting level, it is usually an error; it would be erroneous to embed `log.Logger` if the `Job` struct contained another field or method called `Logger`. However, if the duplicate name is never mentioned in the program outside the type definition, it is OK. This qualification provides some protection against changes made to types embedded from outside; there is no problem if a field is added that conflicts with another field in another subtype if neither field is ever used.
 
 ## Concurrency
 ### Share by communicating
-Concurrent programmig in many environments is made difficult by the subtleties required to implement correct access to shard variables. Go encourages a different approach in which shared values are passed around on channels and, in fact, never atively shared by separate threads of execution. Only one `goroutine` has access to the value at any given time. Data races cannot occur, by design. To encourage this way of thinking we have reduced it to a slogan:
+Concurrent programming in many environments is made difficult by the subtleties required to implement correct access to shard variables. Go encourages a different approach in which shared values are passed around on channels and, in fact, never actively shared by separate threads of execution. Only one `goroutine` has access to the value at any given time. Data races cannot occur, by design. To encourage this way of thinking we have reduced it to a slogan:
 
 **Do not communicate by sharing memory; instead, share memory by communicating.**
 
-One way to think about this model is to consider a typical single-threaded program running on the CPU. It has no need for synchronization primitives. Now run another such instance; it too needs no synchronization. Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchroniztion. Unix pipelines, for example, fit this model perfectly. Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also been as a type-safe generalization of Unix pipes.
+One way to think about this model is to consider a typical single-threaded program running on the CPU. It has no need for synchronization primitives. Now run another such instance; it too needs no synchronization. Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchroniztion. Unix pipelines, for example, fit this model perfectly. Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also be as a type-safe generalization of Unix pipes.
 
 ### Goroutines
 They'are called *goroutines* because the existing terms—threads, coroutines, processes, and so on—convey inaccurate connotations. A goroutine has a simple model: it is a function executing concurrently with other goroutines in the same address space. It is lightweight, costing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating (and freeing) heap storage as required.
 
 Goroutines are multiplexed onto multiple OS threads so if one should block, such as while waiting for I/O, others continue to run. Their design hides many of the complexities of thread creation and manangement.
 
-Prefix a funciton or method call with the **go** keyword to run the call in a new goroutine. When the call completes, the goroutine exits, silently. (The effect is similar to the Unix shell's **&** notation for running a command in the background.)
+Prefix a function or method call with the **go** keyword to run the call in a new goroutine. When the call completes, the goroutine exits, silently. (The effect is similar to the Unix shell's **&** notation for running a command in the background.)
 
     go list.sort()  // run list.sort concurrently; don't wait for it
 
@@ -919,7 +919,7 @@ Like maps, channels are allocated with `make`, and the resulting value acts as a
     cj := make(chan int, 0)         // unbuffered channel of integers
     cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
 
-Unbuffered channels combine communication—the exchange fo a value—with synchronization—guaranteeing that two calculations (goroutines) are in a know state.
+Unbuffered channels combine communication—the exchange fo a value—with synchronization—guaranteeing that two calculations (goroutines) are in a known state.
 
     // A channel can allow the launching goroutine to wait for the sort to complete.
 
@@ -932,7 +932,7 @@ Unbuffered channels combine communication—the exchange fo a value—with synch
     doSomethingForAWhile()
     <-c     // Wati for sort to finish; discard sent value.
 
-Receivers always block until there is data to receive. If the channel is unbuffered, the sender blocks until the receiver has received the value. If the channel has a buffer, the sender blocks only util the value has been copied to the buffer; if the buffer is full, this means waiting util some receiver has retrieved a value.
+Receivers always block until there is data to receive. If the channel is unbuffered, the sender blocks until the receiver has received the value. If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; if the buffer is full, this means waiting until some receiver has retrieved a value.
 
 A buffered channel can be used like a semaphore, for instance to limit throughput.
 
@@ -1009,7 +1009,7 @@ If a type includes a channel on which to reply, each client can provide its own 
         resultChan  chan int
     }
 
-The client provides a function and its arguments, as well as a channel isnide the request object on which to receive the answer.
+The client provides a function and its arguments, as well as a channel inside the request object on which to receive the answer.
 
     func sum(a []int) (s int) {
         for _, v := range a {
@@ -1035,9 +1035,9 @@ On the server side, the handler function is the only thing that changes.
 There's clearly a lot more to do make it realistic, but this code is a framework for a rate-limited, parallel, non-blocking RPC system, and there's not a mutex in sight.
 
 ### Parallelization
-If a calculation can be broken into separate pieces that can execute independently, it can be to parallelize across multiple CPU cores, with a channel to signal when each piece completes.
+If a calculation can be broken into separate pieces that can execute independently, it can be to parallelized across multiple CPU cores, with a channel to signal when each piece completes.
 
-Let's say we have an expensive operation to perform on a vector of itmes, and that the value of the operation on each item is independent, as in this idealized example.
+Let's say we have an expensive operation to perform on a vector of itmes, and that the value of the operation on each item is independent, as in this idealized example:
 
     type Vector []float64
 
@@ -1079,7 +1079,7 @@ Although the concurrency features of Go can make some problems easy to structure
 To be continued....
 
 ## Errors
-Libraries routines must often return some sort of error indication to the caller. As menthioned earlier, Go's multivalue return makes it easy to return a detailed error description alongside the normal return value. It is good style to use this feature to provide detailed error information.
+Libraries routines must often return some sort of error indication to the caller. As mentioned earlier, Go's multivalue return makes it easy to return a detailed error description alongside the normal return value. It is good style to use this feature to provide detailed error information.
 
 By convention, errors have type `error`, a simple built-in interface.
 
@@ -1147,7 +1147,7 @@ There is a built-in function `panic` that takes a single argument of arbitrary t
 This is only an example but real library functions should avoid `panic`. If the program can be masked or worked around, it's always better to let things continue to run rather than taking down the whole program.
 
 ### Recover
-When `panic` is called, including implicitly for run-time errors such indexing a slice out of bounds or failing a type assertion, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way. If that unwinding reaches the top of the goroutine's stack, the program dies. However, it is possible to use the built-in function `recover` to regain control of the goroutine and resume normal execution.
+When `panic` is called, including implicitly for runtime errors such indexing a slice out of bounds or failing a type assertion, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way. If that unwinding reaches the top of the goroutine's stack, the program dies. However, it is possible to use the built-in function `recover` to regain control of the goroutine and resume normal execution.
 
 A call to `recover` stops the unwinding and returns the argument passed to `panic`. Because the only code that runs while unwinding is inside deferred functions, `recover` is only useful inside deferred functions.
 
